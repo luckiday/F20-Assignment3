@@ -55,16 +55,17 @@ Implement the assignment in clean and understandable code. Each required part mu
 3. Place four orbiting planets.  Their radius shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate than the previous.  Leave the ambient lighting of each planet the default value of zero. **- 5 points.**
 
 4. Planet descriptions, from the innermost to the outermost:
+   
    **Planet 1:**  Icy-gray, 2 subdivisions, flat shaded, diffuse only. **- 5 points.**
-   
+
    ![image-1](docs/image-1.gif)
-   
+
    **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. **- 8 points.**
-   
+
    >  To Gouraud shade:  Find the code in `Phong_Shader` that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning `gouraud: 1` will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call `phong_model_lights()` until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
-   
+
    ![image-2](docs/image-2.gif)
-   
+
    **Planet 3:**  Muddy brown-orange, 4 subdivisions, maximum diffuse and specular.  The planet must wobble on in its rotation over time (have an axis not the same as the orbit axis).  The planet must have a ring.  You can use the provided torus shape, scaled flatter (reduced z axis scale).  The ring and planet must wobble together - so base the ring's matrix directly on the planet's matrix.  Give the ring the same material as the planet, unless you make a custom shader for it for extra credit, as described below. **- 5 points.**
 
    ![image-3](docs/image-3.gif)
@@ -73,14 +74,14 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    ![image-4](docs/image-4.gif)
 
-5. Camera buttons: To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first. These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
+6. Camera buttons: To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first. These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
 
    In order for these buttons to start working, your `display()` function must assign new values to your camera matrix.  Your `display()` function must also fill in the following class-scope variables with the correct planet's model matrix: `"this.planet_1"` `"this.planet_2"` `"this.planet_3"` `"this.planet_4"` `"this.moon"` and, possibly, extra credit `"this.planet_5"` (see below).
 
    Once you have those, the buttons will now set the function `this.attached()` to return the matrix of the planet we want.  This is like storing a pointer to the planet's matrix that will always be up-to-date with new values of it.  In JavaScript when we want a long-term pointer to a variable we often use a function returning a variable (a closure) instead.
 
    Now you must call `this.attached()` to assign to the camera matrix.  Only do the following when the value of `this.attached` is not undefined (so, when a button has already been pressed).  Somewhere in `display()`, compute the desired camera matrix (let's call the matrix "`desired`") by calling `this.attached()`, translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of `desired` into the variable `program_state.camera_transform` **- 10 points.**   
-   
+
    ![image-5](docs/image-5.gif)
 
 
