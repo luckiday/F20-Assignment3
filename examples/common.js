@@ -350,7 +350,7 @@ const Cone_Tip = defs.Cone_Tip =
 const Torus = defs.Torus =
     class Torus extends Shape {
         // Build a donut shape.  An example of a surface of revolution.
-        constructor(rows, columns, texture_range) {
+        constructor(rows, columns, texture_range=[[0, 1], [0, 1]]) {
             super("position", "normal", "texture_coord");
             const circle_points = Array(rows).fill(vec3(1 / 3, 0, 0))
                 .map((p, i, a) => Mat4.translation(-2 / 3, 0, 0)
