@@ -30,7 +30,7 @@ For the sphere instances that have 1 or 2 subdivisions, use flat shading to buil
 
 If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
 
->  **Materials:**  Recall that all Material objects really come from calling class `Material(shader, options)` .  For this project we'll use the provided `Phong_Shader` for everything, besides extra credit part 2.  What are materials, besides objects that hold a color?  Well, they also store more settings for Phong shading, including numbers found in the Phong Reflection Model like the ambient coefficient, diffuse coefficient, specular coefficient, and shininess exponent.  You can pass all of these values in inside a JavaScript object placed after the `Color` parameter when you construct a `Material`, mimicking how our example `Material` instances do it.  You can assign values to ambient, diffuse, and specular (leave shininess as the default).  These coefficients range from zero to a maximum of one.
+>  **Materials:**  Recall that all Material objects really come from calling class `Material(shader, options)` .  For this project we'll use the provided `Phong_Shader`and create two new shaders `Gouraud_Shader` and `Ring_Shader`.  What are materials, besides objects that hold a color?  Well, they also store more settings for Phong shading, including numbers found in the Phong Reflection Model like the ambient coefficient, diffuse coefficient, specular coefficient, and shininess exponent.  You can pass all of these values in inside a JavaScript object placed after the `Color` parameter when you construct a `Material`, mimicking how our example `Material` instances do it.  You can assign values to ambient, diffuse, and specular (leave shininess as the default).  These coefficients range from zero to a maximum of one.
 
 Draw the following scene in the `display()` function of `Assignment3`.
 
@@ -50,7 +50,7 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 1. Place a spherical sun at the origin.  Use a sphere that is subdivided 4 times.  Use maximum ambient in the material.  It swells from radius 1 up to 3 over a 5 second period, and fades from blue when it's smallest to red when it's biggest. **- 5 points.**
 
-2. Make a point light source located in the center of the sun, matching the current color of the sun ball, with a size parameter equal to `10**n` where n is the current sun radius.  In JavaScript, `**` is the exponent operator.  Since the light's size is changing and not the brightness, you should see the outer planets darken more than the inner ones whenever the sun shrinks. **- 7 points.**
+2. Make a point light source located in the center of the sun, matching the current color of the sun ball, with a size parameter equal to `10**n` where n is the current sun radius.  In JavaScript, `**` is the exponent operator.  Since the light's size is changing and not the brightness, you should see the outer planets darken more than the inner ones whenever the sun shrinks. **- 5 points.**
 
 3. Place four orbiting planets.  Their radius shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate than the previous.  Leave the ambient lighting of each planet the default value of zero. **- 5 points.**
 
@@ -60,9 +60,9 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    ![image-1](docs/image-1.gif)
 
-   **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. **- 8 points.**
+   **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply **Gouraud shading** to it every odd second, but Phong shading every even second. **- 10 points.**
 
-   >  To Gouraud shade:  Find the code in `Phong_Shader` that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning `gouraud: 1` will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call `phong_model_lights()` until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
+   >  **To Gouraud shader:**  Edit the class `Gouraud_Shader` and create the Gouraud shader from the current Phong shader template. Find the code that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the color calculation occurs in the vertex shader.  Otherwise, to perform phong shading, this process waits to call `phong_model_lights()` until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with phong shading, the fragment shader interpolates normals.
 
    ![image-2](docs/image-2.gif)
 
